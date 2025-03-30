@@ -1,0 +1,23 @@
+from flask import Flask, jsonify
+import subprocess
+
+app = Flask(__name__)
+
+@app.route('/run-prediction', methods=['GET'])
+def run_prediction():
+    try:
+        # Run the existing python script.  Capture the output if needed.
+        # result = subprocess.run(['python', 'your_script.py'], capture_output=True, text=True, check=True)
+
+        # Load the HTML file
+        with open('C:/Users/gurav/Desktop/Pratik/CardioScope/Random Forest/Success/index.html', 'r') as f:
+            html_content = f.read()
+
+        return jsonify(html=html_content)  # Return the HTML as JSON
+
+    except Exception as e:
+        return jsonify(error=str(e)), 500  # Handle errors
+
+
+if __name__ == '__main__':
+    app.run(debug=True)

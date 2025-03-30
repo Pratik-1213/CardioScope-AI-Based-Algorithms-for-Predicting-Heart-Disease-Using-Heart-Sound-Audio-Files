@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/style.css">
+    <title>Heart Sound Prediction</title>
+</head>
+<body>
+    <h1>Upload a Heart Sound File</h1>
+
+    <form id="upload-form" enctype="multipart/form-data">
+        <input type="file" id="audio-file" name="audio_file" accept=".wav" required>
+    </form>
+
+    <div class="insight-card" id="prediction-card">
+        <h3>AI Health Insights</h3>
+        <p id="prediction-text">Waiting for file...</p>
+    </div>
+
+    <script>
+        document.getElementById("audio-file").addEventListener("change", function() {
+            let fileInput = this.files[0];
+            if (!fileInput) return;
+    
+            let formData = new FormData();
+            formData.append("audio_file", fileInput);
+    
+            document.getElementById("prediction-text").innerText = "Analyzing...";
+    
+            fetch("/predict", {  // ✅ Corrected to /predict
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text())  // Get plain text response
+            .then(data => {
+                document.getElementById("prediction-text").innerText = data; // Show result
+            })
+            .catch(error => {
+                document.getElementById("prediction-text").innerText = "Error processing file";
+            });
+        });
+    </script>    
+    
+</body>
+</html>
